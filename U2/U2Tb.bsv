@@ -46,21 +46,22 @@ package U2Tb;
                     dut.setParam(0, 7);
                     dut.setParam(1, 3);
                     dut.setParam(2, 17);
-                    for(idx_put <= 10; idx_put < 10; idx_put <= idx_put + 1) action
+                    for(idx_put <= 10; idx_put < 20; idx_put <= idx_put + 1) action
                         dut.calc.put(unpack(pack(idx_put)));
                         $display("HERE in the second loop");
                     endaction
                 endseq
-                
-                for(idx_get <= 0; idx_get < 0; idx_get <= idx_get + 1) action 
-                    $display("Display results for %d", idx_put);
-                    let actual <- dut.calc.result();
-                    $display("Expected %d, got %d", testvec[idx_get], actual);
-                    if(testvec[idx_get] == actual)
-                        correct_tests <= correct_tests + 1;
-                    else
+                seq
+                    for(idx_get <= 0; idx_get < 20; idx_get <= idx_get + 1) action 
+                        $display("Display results for %d", idx_get);
+                        let actual <- dut.calc.result();
                         $display("Expected %d, got %d", testvec[idx_get], actual);
-                endaction
+                        if(testvec[idx_get] == actual)
+                            correct_tests <= correct_tests + 1;
+                        else
+                            $display("Expected %d, got %d", testvec[idx_get], actual);
+                    endaction
+                endseq
             endpar
             $display("%d of 20 tests passed", correct_tests);
             if(correct_tests == 20)
