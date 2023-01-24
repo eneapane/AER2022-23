@@ -13,7 +13,7 @@ package GaussTb;
         Reg#(UInt#(32)) read_x <- mkReg(0);
         Reg#(UInt#(32)) read_y <- mkReg(0);
         Reg#(UInt#(32)) writeCounter <- mkReg(0);
-        Reg#(UInt#(64)) addressRead <- mkRegU;
+        Reg#(UInt#(64)) addressRead <- mkRegU;  
         Reg#(UInt#(64)) addressWrite <- mkRegU;
         Reg#(Int#(32)) kernel_x <- mkReg(0);
         Reg#(Int#(32)) kernel_y <- mkReg(0);
@@ -48,7 +48,7 @@ package GaussTb;
         Stmt convertImage = seq 
             action
                 let t1 <- readImage_create("./picture.png");
-                addressRead <= t1;
+                addressRead <= t1; // in two steps, as no operator to combine <- and <= 
                 $display("Reading image, is at: %d", t1);
 
                 n_pixels <= fromInteger(width-2) * fromInteger(height-2);

@@ -21,20 +21,20 @@ module mkRowBuffer(RowBufferServer);
     FIFO#(Vector#(2, Maybe#(GrayScale))) outputValue <- mkBypassFIFO;
 
     BufferServer buffer[2];
-    for(Integer i = 0; i < 2; i = i + 1)
+    for(Integer i = 0; i < 2; i = i + 1) //static unrolling
         buffer[i] <- mkBRAMBuffer;
 
     rule drainInput;
         let value = inputValue.first;
         inputValue.deq;
 
-        for(Integer i = 0; i < 2; i = i + 1)
+        for(Integer i = 0; i < 2; i = i + 1) //simulatanous transmission of values from both buffers
             buffer[i].request.put(value[i]);
     endrule
 
     rule fillOutput;
         Vector#(2, Maybe#(GrayScale)) vec;
-        for(Integer i = 0; i < 2; i = i + 1) begin
+        for(Integer i = 0; i < 2; i = i + 1) begin //simultanous transmission of values from both Buffers
             let t <- buffer[i].response.get;
             vec[i] = t;
         end
