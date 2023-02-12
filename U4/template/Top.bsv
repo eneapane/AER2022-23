@@ -85,7 +85,7 @@ package Top;
                 col_cnt <= fromInteger(width-2);
             end
             else begin
-                col_cnt <= t;
+                col_cnt <= t; //decrement col_cnt by one
             end
         endrule
 
@@ -94,7 +94,7 @@ package Top;
         endrule
 
         rule forwardResult;
-            let t <- filter.response.get();
+            let t <- filter.response.get(); //extract from mkGauss and put it into the output fifo
             out.enq(t);
         endrule
 
@@ -107,7 +107,7 @@ package Top;
             return started && npix == 0;
         endmethod
 
-        method Action ack() if(started && npix == 0);
+        method Action ack() if(started && npix == 0); //reset accelerator
             started <= False;
             rowbuffer.clear();
             for(Integer i = 0; i < 3; i = i + 1) begin

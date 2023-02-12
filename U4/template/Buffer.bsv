@@ -11,6 +11,7 @@ import MyTypes::*;
 
 // TODO: extend in task 4.2
 interface BufferServer;
+    method Action clear();
     interface Put#(Maybe#(GrayScale)) request;
     interface Get#(Maybe#(GrayScale)) response;
 endinterface: BufferServer
@@ -48,6 +49,14 @@ module mkBRAMBuffer(BufferServer);
 
         outputValue.enq(value);
     endrule
+
+    method Action clear();
+        counterInput <= 0;
+        flag <= False;
+        inputValue.clear();
+        outputValue.clear();
+        bufferedValue.clear();
+    endmethod
 
     interface Put request = toPut(inputValue);
     interface Get response = toGet(outputValue);

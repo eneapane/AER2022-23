@@ -12,6 +12,7 @@ import Buffer::*;
 
 // TODO: extend in task 4.2
 interface RowBufferServer;
+    method Action clear();
     interface Put#(Vector#(2, Maybe#(GrayScale))) request;
     interface Get#(Vector#(2, Maybe#(GrayScale))) response;
 endinterface: RowBufferServer
@@ -41,6 +42,13 @@ module mkRowBuffer(RowBufferServer);
 
         outputValue.enq(vec);
     endrule
+
+    method Action clear();
+        inputValue.clear();
+        outputValue.clear();
+        for(Integer i = 0; i < 2; i = i + 1)
+            buffer[i].clear();
+    endmethod
 
     interface Put request = toPut(inputValue);
     interface Get response = toGet(outputValue);
