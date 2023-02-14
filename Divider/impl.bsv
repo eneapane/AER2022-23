@@ -2,14 +2,15 @@ package impl;
     import Vector::*;
     import FIFO::*;
     import ClientServer::*;
+    import GetPut::*;
 
     // interface Divider;
     //         interface Put#(Tuple2#(Int#(32), Int#(32))) request;
     //         interface Get#(Maybe#(Int#(32))) response;
     // endinterface : Divider
-    //typedef Server#(Tuple2#(Int#(32), Int#(32)), Maybe#(Int#(32))) Divider;
+    typedef Server#(Tuple2#(Int#(32), Int#(32)), Maybe#(Int#(32))) Divider;
     ////////////////////////////
-    module mkDivider(Server#(Tuple2#(Int#(32), Int#(32)), Maybe#(Int#(32))));
+    module mkDivider(Divider);
         Reg#(Bool) calcReady <- mkReg(False);
         Reg#(Bool) calcBegin <- mkReg(False);
 
@@ -19,7 +20,7 @@ package impl;
         Reg#(Int#(32)) a <- mkRegU;
         Reg#(Int#(32)) b <- mkRegU;
         Reg#(Int#(32)) res <- mkReg(0);
-
+        (* descending_urgency = "getFromInput, calculate, pushToOutput" *)
         rule pushToOutput;
             if(calcReady == True && calcBegin == True) begin
                 calcReady <= False;
