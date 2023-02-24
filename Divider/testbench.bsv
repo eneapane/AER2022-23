@@ -10,7 +10,7 @@ package testbench;
         Reg#(Int#(32)) t <- mkRegU;
         Stmt s = seq
                     $display("Starting the testbench");
-                    dut.request.put(tuple2(30, 5));
+                    dut.request.put(tuple2(34, 5));
                     /*action
                         let result <- dut.response.get();
                         t <= result;
