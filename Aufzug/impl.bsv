@@ -47,6 +47,7 @@ module mkDoor(Door_ifc);
 
         while(True) seq //since there's a cycle in the FSM graph
             //Closing
+            state <= Closing;
             await(light_barrier == Obstructed || door_sensor == FullyClosed);
 
             if(light_barrier == Obstructed) 
@@ -60,10 +61,10 @@ module mkDoor(Door_ifc);
             timer <= unpack(10);
             await(door_sensor == FullyOpened); //T10
 
-            while(timer > 0) 
+            state <= Opened;
+            while(timer > 0) action
                 timer <= timer - 1;
-            
-            state <= Closing;
+            endaction
         endseq
 
     endseq;
@@ -77,8 +78,5 @@ module mkDoor(Door_ifc);
     method State door_state(); return state; endmethod
  
 endmodule
-
-
-
 
 endpackage
