@@ -13,21 +13,18 @@ package testbench;
             dut.enq(4);
             dut.enq(8);
 
-            while(ctr < 25)
+            while(ctr < 28)
             par
-                dut.enq(unpack(pack(ctr)));
+                dut.enq(unpack(pack(ctr + 2)));
                 dut.deq();
             action
-                let t <- dut.first();
-                if(isValid(t)) action
-                    printTimed("First Element");
-                    $display("%d", t);
-                endaction
-                else $display("It is invalid");
+                printTimed("First Element");
+                $display("%d", dut.first());
                 ctr <= ctr + 5;
             endaction
 
             endpar
+            $display("Finished testbench");
         endseq;
 
         mkAutoFSM(s);
