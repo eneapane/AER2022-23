@@ -11,7 +11,7 @@ package impl;
       $display("[%03d] %s", $time, f);
     endfunction
 
-    typedef 5 Capacity;
+    typedef 7 Capacity;
     typedef TAdd#(1, TLog#(TAdd#(Capacity,1))) Stackpointer_size ;
 
     module mkMyFIFO(MyFIFO);
@@ -25,10 +25,9 @@ package impl;
         
         method Action deq() if(size[1] > 0);
             size[1] <= size[1] - 1;
-            stack[0][1] <= stack[1][1];
-            stack[1][1] <= stack[2][1];
-            stack[2][1] <= stack[3][1];
-            stack[3][1] <= stack[4][1];
+            for(Integer i = 1; i < valueOf(Capacity); i = i + 1) begin
+                stack[i - 1][1] <= stack[i][1];
+            end
         endmethod
         method (Int#(32)) first() if(size[1] > 0);
             return stack[0][1];
